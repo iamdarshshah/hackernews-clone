@@ -1,11 +1,13 @@
 const { GraphQLServer } = require("graphql-yoga");
 const { PrismaClient } = require("@prisma/client");
 
+const prisma = new PrismaClient();
+
 const resolvers = {
   Query: {
     info: () => `This is the API of a Hackernews Clone`,
-    feed: () => async (parent, args, context, info) => {
-      return context.prisma.link.findmany();
+    feed: async (parent, args, context, info) => {
+      return context.prisma.link.findMany();
     },
   },
   Mutation: {
@@ -20,8 +22,6 @@ const resolvers = {
     },
   },
 };
-
-const prisma = new PrismaClient();
 
 const server = new GraphQLServer({
   typeDefs: "./src/schema.graphql",
